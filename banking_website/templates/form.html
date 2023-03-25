@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+<form id="myForm" action="" method="post" >
+{% csrf_token %}
+<br>
+
+<label style="margin-right: 22px;">Name  :</label>
+<input type="text" name="name" required><br>
+<label style="margin-right: 30px;">DOB  :</label>
+<input type="date" name="dob" required><br>
+<label style="margin-right: 12px;">Gender :</label>
+<input type="radio" name="gender" value="male" checked required="required"> Male <input type="radio" name="gender" value="female"> Female <br>
+<label style="margin-right: 20px;">Phone      :</label>
+<input type="integer" name="number" required pattern="[789][0-9]{9}"><br>
+<label style="margin-right: 25px;">Email      :</label>
+<input type="email" name="email" required pattern="[^ @]*@[^ @]*"><br>
+<label style="margin-right: 7px;">Address      :</label>
+<input type="text" name="address" required><br>
+<label style="margin-right: 18px;">District   :</label>
+<!--<label for="district">Choose a car:</label>-->
+
+<select id="district" name="district" required>
+  {% for item in district  %}
+  <option value="{{item.id}}">{{item.district}}</option>
+<!--&lt;!&ndash;  <option value="Malappuram">Malappuram</option>&ndash;&gt;-->
+<!--&lt;!&ndash;  <option value="Thrissur">Thrissur</option>&ndash;&gt;-->
+<!--&lt;!&ndash;  <option value="Kasargod">Kasargod</option>&ndash;&gt;-->
+<!--&lt;!&ndash;  <option value="Ernakulam">Ernakulam</option>&ndash;&gt;-->
+  {% endfor %}
+</select><br>
+
+<label style="margin-right: 15px;">Branch   :</label>
+<select id="branch" disabled name="branch" required>
+
+  <option value="">Select your district</option>
+<!--&lt;!&ndash;  <option value="Current">br2</option>&ndash;&gt;-->
+<!--&lt;!&ndash;  <option value="Joint">br3</option>&ndash;&gt;-->
+
+</select><br>
+
+<label>Account type   :</label>
+<select id="acc" name="acc" required>
+  <option value="Savings">Savings</option>
+  <option value="Current">Current</option>
+  <option value="Joint">Joint</option>
+</select><br>
+<label>Materials provided   :</label><br>
+<input type="checkbox" id="materials" name="Creditcard" value="materials" required>
+<label for="Creditcard"> Credit card</label><br>
+<input type="checkbox" id="Debitcard" name="Debitcard" value="Debitcard">
+<label for="Debitcard"> Debit card</label><br>
+<input type="checkbox" id="Chequebook" name="Chequebook" value="Chequebook">
+<label for="Chequebook"> Cheque book</label><br>
+<input type="submit" class="btn btn-warning  value="Submit">
+
+<!--<script>-->
+<!--function myFunction() {-->
+<!-- alert("I am an alert box!");-->
+<!--}-->
+<!--</script>-->
+<a href="/logout" class="btn btn-warning"  type="button" data-bs-toggle="button">Logout</a>
+
+</form>
+ <p id="error" style="display:none; color:red;">Please fill in all required fields.</p>
+ <p id="success" style="display:none; color:green;">Form submitted successfully!</p>
+</div>
+
+<script>
+    const districtSelect = document.getElementById('district');
+    const branchSelect = document.getElementById('branch');
+
+    districtSelect.addEventListener('change', function() {
+        const districtId = this.value;
+        branchSelect.disabled = true;
+        branchSelect.innerHTML = '<option value="">loading</option>';
+
+        fetch(`/get_branches/${districtId}/`)
+            .then(response => response.json())
+            .then(branches => {
+                branchSelect.innerHTML = '<option value="">Select a branch</option>';
+                branches.forEach(branch => {
+                    branchSelect.innerHTML += `<option value="${branch.id}">${branch.name}</option>`;
+                });
+                branchSelect.disabled = false;
+            });
+    });
+</script>
+
+
+
+<script>
+const form = document.getElementById('myForm');
+const error = document.getElementById('error');
+const success = document.getElementById('success');
+
+form.addEventListener('submit', function(event) {
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    error.style.display = 'block';
+    success.style.display = 'none';
+  } else {
+    event.preventDefault();
+    error.style.display = 'none';
+    success.style.display = 'block';
+  }
+});
+
+</script>
+
+<!--<script>-->
+
+<!--$(document).ready(function(){-->
+
+<!-- var district = $("#district");-->
+<!-- var branch = $("#branch");-->
+<!-- var $options = branch.find('option');-->
+<!-- district.on('change',function(){-->
+<!--    branch.html($options.filter('[value="'+ this.value  +'"]'));-->
+<!-- }).trigger('change');-->
+
+
+<!--});-->
+<!--</script>-->
+{% endblock %}

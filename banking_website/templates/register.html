@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block body %}
+<br>
+<div class="form-container">
+
+<h4>Create new account</h4><br>
+<form action="msg/" method="post">
+{% csrf_token %}
+    <section>
+        <label  style="margin-right: 48px;">User name  </label>
+        <input type="text" name="username" required ><br><br>
+        <label style="margin-right: 52px;">Password   </label>
+        <input type="password" name="password" required><br><br>
+        <label>confirm Password </label>
+        <input type="password" name="password1" required><br><br>
+        <input type="submit" class="btn btn-warning"  value="Register">
+    </section>
+</form>
+{% for msg in messages %}
+<h6>{{msg}}</h6>
+</div>
+{% endfor %}
+{% endblock %}

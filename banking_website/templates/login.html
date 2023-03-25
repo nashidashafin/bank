@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+<br><br><br>
+<div class="form-container">
+    <form action="" method="post">
+    {% csrf_token %}
+    <section>
+    <label>Username   :</label>
+    <input type="text" name="username" required><br><br>
+    <label>Password   :</label>
+    <input type="password" name="password" required><br><br>
+    <input type="submit" class="btn btn-warning" value="Login">
+    </section>
+    </form>
+
+{% for msg in messages %}
+<h6> {{msg}} </h6>
+</div>
+{% endfor %}
+{% endblock %}
+
+<!--	.form {-->
+<!--		margin: 0 auto;-->
+<!--		width: 210px;-->
+<!--	}-->
+
+<!--	.form label{-->
+<!--		display: inline-block;-->
+<!--		text-align: right;-->
+<!--		float: left;-->
+<!--	}-->
+
+<!--	.form input{-->
+<!--		display: inline-block;-->
+<!--		text-align: left;-->
+<!--		float: right;-->
+<!--	}-->
